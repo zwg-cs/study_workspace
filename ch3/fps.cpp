@@ -59,7 +59,7 @@ int main(int argc, char **argv)
             av_log(NULL, AV_LOG_ERROR, "video_codec not found\n");
             return -1;
         }
-        av_log(nullptr, AV_LOG_INFO, "video_codec_name=%s.\n", video_codec->name);
+        av_log(nullptr, AV_LOG_INFO, "video_codec_name = %s.\n", video_codec->name);
         AVCodecParameters *video_codecpar = video_stream->codecpar;
         // 计算帧率
         int fps = video_stream->r_frame_rate.num / video_stream->r_frame_rate.den;
@@ -70,11 +70,17 @@ int main(int argc, char **argv)
         /* 计算每个视频帧的持续时间 */
         float per_video = 1000.0 / fps;
         av_log(nullptr, AV_LOG_INFO, "one video frame duration is %.2fms.\n", per_video);
+        /* 获取视频的时间基准 */
+        av_log(nullptr, AV_LOG_INFO, "video_stream time_base.num = %d.\n", video_stream->time_base.num);
+        av_log(nullptr, AV_LOG_INFO, "video_stream time_base.den = %d.\n", video_stream->time_base.den);
+        /* 计算视频帧的时间戳增量 */
+        int avdio_frame_timestamp_increment = 1 * video_stream->time_base.den / fps;
+        av_log(nullptr, AV_LOG_INFO, "video frame timestamp increment = %d.\n", avdio_frame_timestamp_increment);
     }
 
     /* 查看频道流索引 */
     int audio_index = av_find_best_stream(fmt_ctx, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
-    av_log(nullptr, AV_LOG_INFO, "\naudio_index = %d", video_index);
+    av_log(nullptr, AV_LOG_INFO, "\naudio_index = %d.\n", audio_index);
     if (audio_index >= 0)
     {
         AVStream *audio_stream = fmt_ctx->streams[audio_index];
@@ -95,6 +101,12 @@ int main(int argc, char **argv)
         /* 计算音频帧的持续时间，frame_size 是每个音频帧的采样数量 sample_rate 是每个音频帧的采样率 */
         float per_audio = 1000.0 * audio_codecpar->frame_size / audio_codecpar->sample_rate;
         av_log(nullptr, AV_LOG_INFO, "one audio frame's duration is %.2fms.\n", per_audio);
+        /* 音频帧的时间基准 */
+        av_log(nullptr, AV_LOG_INFO, "audio_stream time_base.num = %d.\n", audio_stream->time_base.num);
+        av_log(nullptr, AV_LOG_INFO, "audio_stream time_base.den = %d.\n", audio_stream->time_base.den);
+        /* 音频帧时间戳的增量 */
+        int audio_frame_timestamp_increment = 1 * audio_codecpar->frame_size * (audio_stream->time_base.den / audio_codecpar->sample_rate);
+        av_log(nullptr, AV_LOG_INFO, "audio frame timestamp increment = %d.\n", audio_frame_timestamp_increment);
     }
     /* 关闭文件 */
     avformat_close_input(&fmt_ctx);
