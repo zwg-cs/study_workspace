@@ -84,8 +84,9 @@ int save_jpg_file(AVFrame *frame, int save_index)
             av_log(NULL, AV_LOG_ERROR, "write frame occur error %d.\n", ret);
             break;
         }
+        av_packet_unref(packet); // 清除数据包
     }
-    av_packet_unref(packet); // 清除数据包
+
     // 写入文件尾
     av_write_trailer(jpg_fmt_ctx);
     // 释放资源
@@ -207,6 +208,7 @@ int main(int argc, char **argv)
                 break;
             }
         }
+        av_packet_unref(packet); // 清除数据包
     }
     av_log(nullptr, AV_LOG_INFO, "Success save %d_index frame as jpg file.\n", save_index);
     // 释放资源
