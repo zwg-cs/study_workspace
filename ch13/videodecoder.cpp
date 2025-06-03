@@ -184,6 +184,20 @@ int VideoDecoder::playVideo()
         av_packet_unref(packet);  // 清空数据包
     }
 
+    qInfo() << "Success play video file" << '\n';
+
+    av_frame_free(&frame); // 释放数据帧资源
+    av_packet_free(&packet); // 释放数据包资源
+    av_frame_free(&m_rgb_frame); // 释放数据帧资源
+    av_frame_free(&m_yuv_frame); // 释放数据帧资源
+    sws_freeContext(m_rgb_sws); // 释放图像转换器的实例
+    sws_freeContext(m_yuv_sws); // 释放图像转换器的实例
+    avcodec_close(video_decode_ctx); // 关闭视频解码器的实例
+    avcodec_free_context(&video_decode_ctx); // 释放视频解码器的实例
+    avformat_close_input(&in_fmt_ctx); // 关闭音视频文件
+    qInfo() << "Quit Play" << '\n';
+    stop();
+    m_callback->onStopPlay(); // 通知界面修改按钮状态
     return 0;
 }
 

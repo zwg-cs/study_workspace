@@ -15,8 +15,8 @@ FunctionTransfer::FunctionTransfer(QObject *parent)
     // 因为std::function<void()> 是自定义的类型，所以跨线程传递先要注册一下
     qRegisterMetaType<std::function<void()>>();
 
-    connect(this, SIGNAL(coming(std::function<void()>)), this, SLOT(slotExec(std::function<void()>)), Qt::BlockingQueuedConnection);
-    connect(this, SIGNAL(comming_noBlock(std::function<void()>)), this, SLOT(slotExec(std::function<void>())), Qt::QueuedConnection);
+    connect(this, SIGNAL(comming(std::function<void()>)), this, SLOT(slotExec(std::function<void()>)), Qt::BlockingQueuedConnection);
+    connect(this, SIGNAL(comming_noBlock(std::function<void()>)), this, SLOT(slotExec(std::function<void()>)), Qt::QueuedConnection);
 }
 
 // 析构函数

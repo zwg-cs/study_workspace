@@ -10,7 +10,7 @@
 
 #include "videoview.h"
 #include "videodecoder.h"
-// #include "openglview.h"
+#include "openglview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,7 +32,7 @@ private:
     QPushButton * btn_pause;
     VideoView* video_view;
     QPushButton* btn_play2;
-    VideoView* opengl_view;
+    OpenglView* opengl_view;
 
     char m_video_path[128] = {NULL};
     bool is_stop = true;
@@ -40,7 +40,7 @@ private:
     int m_play_type = -1;
 
     // 视频解码器
-    VideoDecoder* videoDecoder = nullptr;
+    VideoDecoder* video_decoder = nullptr;
     // 开始/停止播放视频
     void playVideo(int play_video);
     // 暂停/恢复播放视频
