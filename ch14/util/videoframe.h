@@ -20,9 +20,9 @@ public:
     // 初始化图像缓存
     void initBuffer(const int width, const int hegith);
     // 设置YUV图像缓存
-    void setYUVBuffer(const uint8_t *buf);
+    void setYUVbuf(const uint8_t *buf);
     // 设置RGB图像缓存
-    void setRGBBuffer(const uint8_t *buf);
+    void setRGBbuf(const uint8_t *buf);
 
     int width()
     {

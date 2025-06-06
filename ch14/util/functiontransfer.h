@@ -39,13 +39,13 @@ private:
 
 Q_SIGNALS:
     // 发射该信号以“阻塞方式”将函数对象传递到主线程  (BlockingQueuedConnection)
-    void comming(std::function<void ()> f);
+    void comming(std::function<void()> f);
     // 发射该信号以“非阻塞方式”传递函数对象到主线程 (QueuedConnection)
-    void comming_noBlock(std::function<void ()> f);
+    void comming_noBlock(std::function<void()> f);
 
 private Q_SLOTS:
     // 真正执行函数对象的槽函数，运行在主线程中
-    void slotExec(std::function<void ()> f);
+    void slotExec(std::function<void()> f);
 };
 
 #endif // FUNCTIONTRANSFER_H

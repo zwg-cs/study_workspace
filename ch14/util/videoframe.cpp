@@ -48,14 +48,14 @@ void VideoFrame::initBuffer(const int width, const int height)
 
 
 // 设置YUV缓存数据,将buf指向的数据复制到mYuv420Buffer
-void VideoFrame::setYUVBuffer(const uint8_t* buf)
+void VideoFrame::setYUVbuf(const uint8_t* buf)
 {
     int Ysize = mWidth * mHeight;
     memcpy(mYuv420Buffer, buf, Ysize * 3 / 2);
 }
 
 // 设置RGB缓存数据
-void VideoFrame::setRGBBuffer(const uint8_t* buf)
+void VideoFrame::setRGBbuf(const uint8_t* buf)
 {
     memcpy(mRgbBuffer, buf, mWidth * mHeight * 3);
 }

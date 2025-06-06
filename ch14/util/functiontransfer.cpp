@@ -17,14 +17,10 @@ FunctionTransfer::FunctionTransfer(QObject* parent) : QObject(parent)
     qRegisterMetaType<std::function<void()>>();
 
     // 连接comming 信号到 slotExec 槽，阻塞调用（调用线程会等待主线程执行完毕）
-    connect(this, SIGNAL(comming(std::function<void()>)),
-            this, SLOT(slotExec(std::function<void()>)),
-            Qt::BlockingQueuedConnection);
+    connect(this, SIGNAL(comming(std::function<void()>)), this, SLOT(slotExec(std::function<void()>)), Qt::BlockingQueuedConnection);
 
     // 连接comming_noBlock 信号到 slotExec 槽，异步调用（调用线程立即返回）
-    connect(this, SIGNAL(comming_noBlock(std::function<void()>)),
-            this, SLOT(slotExec(std::function<void>())),
-            Qt::QueuedConnection);
+    connect(this, SIGNAL(comming_noBlock(std::function<void()>)), this, SLOT(slotExec(std::function<void()>)), Qt::QueuedConnection);
 }
 
 FunctionTransfer::~FunctionTransfer()
@@ -38,6 +34,8 @@ void FunctionTransfer::init(Qt::HANDLE id)
 
     // 实例化一个对象，其线程归属当前线程
     FunctionTransfer::main_thread_forward = new FunctionTransfer();
+    qDebug() << "main_thread_forward:" << FunctionTransfer::main_thread_forward;
+
 }
 
 
@@ -50,7 +48,14 @@ bool FunctionTransfer::isMainThread()
         return false;
     }
 
-    return QThread::currentThread() == gMainThreadId;
+    if (QThread::currentThreadId() == gMainThreadId)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 // 外部统一入口：：确保某个函数在主线程中执行
